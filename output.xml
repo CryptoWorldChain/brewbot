@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot rpa="false" generated="20181211 20:00:08.536" generator="Robot 3.1 (Python 2.7.10 on darwin)">
+<suite source="/Users/brew/Documents/BC/codes/ccks/functiontest/tests/tx_test.robot" id="s1" name="Tx Test">
+<kw type="setup" name="InitSession" library="vers">
+<kw name="Create Session" library="RequestsLibrary">
+<doc>Create Session: create a HTTP session to a server</doc>
+<arguments>
+<arg>LOCAL</arg>
+<arg>${BASE_URL}</arg>
+</arguments>
+<msg timestamp="20181211 20:00:08.650" level="INFO">Creating Session using : alias=LOCAL, url=http://localhost:8000, headers={},                     cookies=None, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" endtime="20181211 20:00:08.652" starttime="20181211 20:00:08.650"></status>
+</kw>
+<kw name="Create Session" library="RequestsLibrary">
+<doc>Create Session: create a HTTP session to a server</doc>
+<arguments>
+<arg>REMOTE</arg>
+<arg>${BASE_URL}</arg>
+</arguments>
+<msg timestamp="20181211 20:00:08.653" level="INFO">Creating Session using : alias=REMOTE, url=http://localhost:8000, headers={},                     cookies=None, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" endtime="20181211 20:00:08.653" starttime="20181211 20:00:08.653"></status>
+</kw>
+<status status="PASS" endtime="20181211 20:00:08.653" starttime="20181211 20:00:08.649"></status>
+</kw>
+<test id="s1-t1" name="001">
+<kw name="GenerateTestData" library="vers">
+<arguments>
+<arg>${arg_gentxnum}</arg>
+</arguments>
+<assign>
+<var>${retcode}</var>
+</assign>
+<kw name="Post Request" library="RequestsLibrary">
+<doc>Send a POST request on the session object found using the
+given `alias`</doc>
+<arguments>
+<arg>LOCAL</arg>
+<arg>${Gen_Tx_data}</arg>
+<arg>data={"defaultTx":${txcount}}</arg>
+</arguments>
+<assign>
+<var>${resp}</var>
+</assign>
+<msg timestamp="20181211 20:00:08.671" level="INFO">Post Request using : alias=LOCAL, uri=/cks/tst/pbltp.do, data=&lt;empty&gt;, headers=None, files=None, allow_redirects=True </msg>
+<msg timestamp="20181211 20:00:08.671" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<status status="PASS" endtime="20181211 20:00:08.671" starttime="20181211 20:00:08.655"></status>
+</kw>
+<kw name="To Json" library="RequestsLibrary">
+<doc>Convert a string to a JSON object</doc>
+<arguments>
+<arg>${resp.content}</arg>
+</arguments>
+<assign>
+<var>${body}</var>
+</assign>
+<msg timestamp="20181211 20:00:08.672" level="INFO">To JSON using : content={"retcode": 0} </msg>
+<msg timestamp="20181211 20:00:08.672" level="INFO">To JSON using : pretty_print=False </msg>
+<msg timestamp="20181211 20:00:08.673" level="INFO">${body} = {u'retcode': 0}</msg>
+<status status="PASS" endtime="20181211 20:00:08.673" starttime="20181211 20:00:08.672"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${body}</arg>
+</arguments>
+<msg timestamp="20181211 20:00:08.673" level="INFO">{u'retcode': 0}</msg>
+<status status="PASS" endtime="20181211 20:00:08.674" starttime="20181211 20:00:08.673"></status>
+</kw>
+<msg timestamp="20181211 20:00:08.674" level="INFO">${retcode} = 0</msg>
+<status status="PASS" endtime="20181211 20:00:08.674" starttime="20181211 20:00:08.654"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>hello==&gt;${retcode}</arg>
+</arguments>
+<msg timestamp="20181211 20:00:08.675" level="INFO">hello==&gt;0</msg>
+<status status="PASS" endtime="20181211 20:00:08.675" starttime="20181211 20:00:08.674"></status>
+</kw>
+<kw name="Should Be True" library="BuiltIn">
+<doc>Fails if the given condition is not true.</doc>
+<arguments>
+<arg>${retcode} == 0</arg>
+</arguments>
+<status status="PASS" endtime="20181211 20:00:08.676" starttime="20181211 20:00:08.675"></status>
+</kw>
+<kw type="for" name="${INDEX} IN RANGE [ 1 | 100 ]">
+<kw type="foritem" name="${INDEX} = 1">
+<kw name="FetchInfo" library="vers">
+<arguments>
+<arg>${GetTestTxCount}</arg>
+<arg>retmsg</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<kw name="Get Request" library="RequestsLibrary">
+<doc>Send a GET request on the session object found using the
+given `alias`</doc>
+<arguments>
+<arg>LOCAL</arg>
+<arg>${arg1}</arg>
+</arguments>
+<assign>
+<var>${resp}</var>
+</assign>
+<msg timestamp="20181211 20:00:08.707" level="INFO">Get Request using : alias=LOCAL, uri=/cks/tst/pbltr.do, headers=None json=None</msg>
+<msg timestamp="20181211 20:00:08.708" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<status status="PASS" endtime="20181211 20:00:08.708" starttime="20181211 20:00:08.677"></status>
+</kw>
+<kw name="To Json" library="RequestsLibrary">
+<doc>Convert a string to a JSON object</doc>
+<arguments>
+<arg>${resp.content}</arg>
+</arguments>
+<assign>
+<var>${body}</var>
+</assign>
+<msg timestamp="20181211 20:00:08.710" level="INFO">To JSON using : content={"retcode": 0,"retmsg": "total::3150"} </msg>
+<msg timestamp="20181211 20:00:08.710" level="INFO">To JSON using : pretty_print=False </msg>
+<msg timestamp="20181211 20:00:08.711" level="INFO">${body} = {u'retcode': 0, u'retmsg': u'total::3150'}</msg>
+<status status="PASS" endtime="20181211 20:00:08.711" starttime="20181211 20:00:08.709"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${body['${arg2}']}</arg>
+</arguments>
+<msg timestamp="20181211 20:00:08.712" level="INFO">total::3150</msg>
+<status status="PASS" endtime="20181211 20:00:08.713" starttime="20181211 20:00:08.712"></status>
+</kw>
+<msg timestamp="20181211 20:00:08.713" level="INFO">${result} = total::3150</msg>
+<status status="PASS" endtime="20181211 20:00:08.714" starttime="20181211 20:00:08.676"></status>
+</kw>
+<kw name="Get Substring" library="String">
+<doc>Returns a substring from ``start`` index to ``end`` index.</doc>
+<arguments>
+<arg>${result}</arg>
+<arg>7</arg>
+</arguments>
+<assign>
+<var>${numtx}</var>
+</assign>
+<msg timestamp="20181211 20:00:08.714" level="INFO">${numtx} = 3150</msg>
+<status status="PASS" endtime="20181211 20:00:08.714" starttime="20181211 20:00:08.714"></status>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<doc>Logs the given message to the console.</doc>
+<arguments>
+<arg>get-result = ${numtx}</arg>
+</arguments>
+<status status="PASS" endtime="20181211 20:00:08.715" starttime="20181211 20:00:08.715"></status>
+</kw>
+<kw name="Exit For Loop If" library="BuiltIn">
+<doc>Stops executing the enclosing for loop if the ``condition`` is true.</doc>
+<arguments>
+<arg>${numtx} &gt;= ${arg_gentxnum}</arg>
+</arguments>
+<msg timestamp="20181211 20:00:08.716" level="INFO">Exiting for loop altogether.</msg>
+<status status="PASS" endtime="20181211 20:00:08.716" starttime="20181211 20:00:08.715"></status>
+</kw>
+<status status="PASS" endtime="20181211 20:00:08.716" starttime="20181211 20:00:08.676"></status>
+</kw>
+<status status="PASS" endtime="20181211 20:00:08.716" starttime="20181211 20:00:08.676"></status>
+</kw>
+<doc>生成模拟交易100</doc>
+<tags>
+<tag>Generate Transaction</tag>
+</tags>
+<status status="PASS" endtime="20181211 20:00:08.716" critical="yes" starttime="20181211 20:00:08.654"></status>
+</test>
+<status status="PASS" endtime="20181211 20:00:08.717" starttime="20181211 20:00:08.539"></status>
+</suite>
+<statistics>
+<total>
+<stat fail="0" pass="1">Critical Tests</stat>
+<stat fail="0" pass="1">All Tests</stat>
+</total>
+<tag>
+<stat fail="0" pass="1">Generate Transaction</stat>
+</tag>
+<suite>
+<stat fail="0" id="s1" name="Tx Test" pass="1">Tx Test</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
