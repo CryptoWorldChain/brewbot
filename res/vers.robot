@@ -15,16 +15,23 @@ ${API_Path}         ${Base_Path}/api
 ${GetLatestBlock}   ${API_Path}/pbglb.do
 
 
+#根据hash获取交易s
+${GetTxByHash}      ${API_Path}/pbgtx.do
+
 #打块时间
 ${Block_Time}           5s
 
 
+
 #生成测试交易
-${Gen_Tx_data}       ${Base_Path}/tst/pbltp.do
+${TST_Gen_Tx_data}       ${Base_Path}/tst/pbltp.do
 #检查测试交易数量
-${GetTestTxCount}       ${Base_Path}/tst/pbltr.do
+${TST_GetTestTxCount}       ${Base_Path}/tst/pbltr.do
+#发送一笔模拟交易
+${TST_SendOneTx}       ${Base_Path}/tst/pblte.do
+
 #每次生成多少个测试交易
-${arg_gentxnum}        100
+${arg_gentxnum}        10
 
 *** Keywords ***
 InitSession
@@ -34,17 +41,26 @@ InitSession
 
 
 FetchInfo
-    [Arguments]    ${arg1}   ${arg2}
-    ${resp}=    Get Request     LOCAL      ${arg1}
+    [Arguments]    ${method}   ${resultcolumn}
+    ${resp}=    Get Request     LOCAL      ${method}
     ${body}=  To Json  ${resp.content}
-    LOG         ${body['${arg2}']}
-    [return]    ${body['${arg2}']}
+    LOG         ${body['${resultcolumn}']}
+    [return]    ${body['${resultcolumn}']}
 
+
+
+PostData
+    [documentation]   发送数据
+    [Arguments]    ${method}    ${data}    ${resultcolumn}
+    ${resp}=    Post Request     LOCAL      ${method}     data=${data}
+    ${body}=  To Json  ${resp.content}
+    LOG         ${body}
+    [return]    ${body['${resultcolumn}']}
 
 
 GenerateTestData
     [Arguments]    ${txcount}=1000
-    ${resp}=    Post Request     LOCAL      ${Gen_Tx_data}     data={"defaultTx":${txcount}}
+    ${resp}=    Post Request     LOCAL      ${TST_Gen_Tx_data}     data={"defaultTx":${txcount}}
     ${body}=  To Json  ${resp.content}
     LOG         ${body}
     [return]    ${body['retcode']}
