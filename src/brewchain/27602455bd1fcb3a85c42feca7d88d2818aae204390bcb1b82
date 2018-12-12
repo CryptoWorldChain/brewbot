@@ -1,0 +1,26 @@
+27602455bd1fcb3a85c42feca7d88d2818aae204390bcb1b82a21723f9622ed6
+
+
+hx=hex(int(str(x)))
+bytearray.fromhex(hx[2:64])[::-1]
+reversed_arr=result[::-1]
+
+x=key.public_key().pointQ.x
+hx=hex(int(str(x)))
+rx = bytearray.fromhex(hx[2:66])[::-1]
+
+
+y=key.public_key().pointQ.y
+hy=hex(int(str(y)))
+ry = bytearray.fromhex(hy[2:66])[::-1]	
+
+
+from Crypto.Hash import SHA256
+
+
+''.join('{:02x}'.format(x) for x in rx+ry)
+
+
+SHA256.new(rx+ry).hexdigest()
+
+
