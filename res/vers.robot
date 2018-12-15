@@ -15,8 +15,13 @@ ${API_Path}         ${Base_Path}/api
 ${GetLatestBlock}   ${API_Path}/pbglb.do
 
 
-#根据hash获取交易s
+#根据hash获取交易
 ${GetTxByHash}      ${API_Path}/pbgtx.do
+
+##获取用户余额
+${GetAccountCoin}   ${API_Path}/pbgac.do
+
+
 
 #打块时间
 ${Block_Time}           5s
@@ -30,8 +35,15 @@ ${TST_GetTestTxCount}       ${Base_Path}/tst/pbltr.do
 #发送一笔模拟交易
 ${TST_SendOneTx}       ${Base_Path}/tst/pblte.do
 
+
+
+
+#发送一笔模拟交易
+${TST_Union_Send}       ${Base_Path}/tst/pbtua.do
+
+
 #每次生成多少个测试交易
-${arg_gentxnum}        10
+${arg_gentxnum}       3
 
 *** Keywords ***
 InitSession
@@ -52,6 +64,7 @@ FetchInfo
 PostData
     [documentation]   发送数据
     [Arguments]    ${method}    ${data}    ${resultcolumn}
+    LOG            postdata=${data}
     ${resp}=    Post Request     LOCAL      ${method}     data=${data}
     ${body}=  To Json  ${resp.content}
     LOG         ${body}
