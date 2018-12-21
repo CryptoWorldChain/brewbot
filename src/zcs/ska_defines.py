@@ -3,7 +3,6 @@ from ctypes import *
 import os
 import platform
 #ska functions
-from enum import Enum
 
 __DLL_NAME = None
 if platform.system() == 'Windows':
