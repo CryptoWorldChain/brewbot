@@ -1,0 +1,13 @@
+[requires]
+ska/1.1.1.37@csc/testing
+
+[generators]
+txt
+
+[options]
+ska:shared=True
+
+[imports]
+lib, *.so* -> ./lib
+bin, *.dll -> ./bin
+lib, *.dylib* -> ./lib
