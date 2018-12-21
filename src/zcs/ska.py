@@ -33,6 +33,9 @@ class Ska(object):
         if skac_ctx_free is not None:
             skac_ctx_free(self.__ctx)
 
+    def startlog(self, level, path):
+        skac_start_log(level, path)
+
     def txn(self):
         return SkaTxn(self.__ctx)
 
@@ -146,6 +149,22 @@ class Ska(object):
     def txnclear(self, txn):
         skac_txn_clear(txn)
 
+    def sign2pub(self, txn, pubtype, signtype, data, sign):
+        buf = create_string_buffer(PUBKEY_MAX_SIZE)
+        size = c_size_t(0)
+        ret = skac_sign_to_pub(txn, pubtype, signtype, data, len(data), sign, len(sign), buf, byref(size))
+        if ret != 0:
+            raise SkaError("sign to pub error:{:02X}".format(ret))
+        return buf[:size.value]
+
+    def sign2addr(self, txn, signtype, addrtype, data, sign):
+        buf = create_string_buffer(ADDR_MAX_SIZE)
+        size = c_size_t(0)
+        ret = skac_sign_to_addr(txn, signtype, addrtype, data, len(data), sign, len(sign), buf, byref(size))
+        if ret != 0:
+            raise SkaError("sign to addr error:{}".format(ret))
+        return buf[:size.value]
+
     def md5(self, txn, data):
         return self.hash(txn, HASH_MD5, data)
 
@@ -171,10 +190,12 @@ if __name__ == '__main__':
     err = c_int(0)
     k = ''
     d = '239293sjfiwefwf'
-    ctx = Ska(EC_256K1)
+    ctx = Ska(EC_256R1)
+    ctx.startlog(4, 'logs/ska.log')
 
     with ctx.txn() as txn:
-        pri = ctx.rand(txn, 32)
+        pri = codecs.decode("1a7264ae5078f2a0c5b5e567457bbcedf1bdc3263ad32576c9a3c512c386ed6f", 'hex')
+        pri = pri[::-1]
         key = ctx.rand(txn, 32)
         iv = ctx.rand(txn, 16)
         ctx.txnclear(txn)
@@ -219,6 +240,10 @@ if __name__ == '__main__':
         print("decrypt with set key", dedata)
         checkret = ctx.pripubverify(txn, pri, pub)
         print("check pri pub result", checkret)
+        pubfromsign = ctx.sign2pub(txn, PUBKEY_RAW, SIGN_CWV, d, sign)
+        addrfromsign = ctx.sign2addr(txn, SIGN_CWV, ADDR_CWV, d, sign)
+        print("sign to pub", len(pubfromsign), codecs.encode(pubfromsign, 'hex'))
+        print("sign to addr", len(addrfromsign), codecs.encode(addrfromsign, 'utf-8'))
 
 
     del ctx

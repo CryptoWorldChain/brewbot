@@ -83,6 +83,7 @@ def bytes2int(b):
 
 
 def impl2tx(impl):
+    """convert from tximpl_pb2.MultiTransactionImpl to tx_pb2.MultiTransaction"""
     _txBody = impl.txBody
     #TODO set signs
 
@@ -132,6 +133,7 @@ def impl2tx(impl):
 
 
 def tx2impl(tx):
+    """convert from tx_pb2.MultiTransaction to tximpl_pb2.MultiTransactionImpl """
     body = tx.txBody
     m = tximpl_pb2.MultiTransactionImpl()
     m.txHash = tx.txHash
@@ -169,6 +171,7 @@ def tx2impl(tx):
 
 
 def loadkeystore(ctx, filepath):
+    """load CWV keystore json file"""
     ks = None
     pykp = None
     with open('keystore1.json', 'r') as kfile:
@@ -213,6 +216,7 @@ def loadkeystore(ctx, filepath):
     return pykp
 
 def post(url, req, resp):
+    """port req to url, resp is response Object"""
     jreq = json_format.MessageToJson(req)
     r = requests.post(url=url, data=jreq)
     return json_format.Parse(r.content, resp)
