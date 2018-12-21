@@ -7,9 +7,9 @@ import json
 import requests
 
 from google.protobuf import json_format
-import gens.tximpl_pb2
-import gens.tx_pb2
-import gens.oentity_pb2
+from gens import tximpl_pb2
+from gens import tx_pb2
+from gens import oentity_pb2
 
 import ska
 from ska_defines import *
