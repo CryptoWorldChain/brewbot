@@ -27,7 +27,8 @@ class SkaError(Exception):
     pass
 
 # void skac_start_log(int level, const char* path)
-skac_start_log = CFUNCTYPE(None, c_int, c_char_p)(("skac_start_log", SKA_DLL))
+#CFUNCTYPE(None, c_int, c_char_p)(("skac_start_log", SKA_DLL))
+skac_start_log = SKA_DLL.skac_start_log
 # skac_context_t* skac_context_init(skac_ec_type_t ec_type, int* error)
 skac_ctx_init = CFUNCTYPE(c_void_p, c_int, c_void_p)(("skac_context_init", SKA_DLL))
 # void skac_context_free(skac_context_t* ctx)
@@ -88,10 +89,14 @@ skac_pub_extend = CFUNCTYPE(c_int, c_void_p, POINTER(c_uint8), c_uint64, POINTER
 # int skac_pub_to_addr(skac_txn_t* txn, int addr_type, const uint8_t* pubkey, size_t pubkey_size, uint8_t* addr, size_t *addr_size);
 skac_pub_to_addr = CFUNCTYPE(c_int, c_void_p, c_int, c_void_p, c_size_t, c_void_p,
                              c_void_p)(("skac_pub_to_addr", SKA_DLL))
-skac_sign_to_pub = CFUNCTYPE(c_int, c_void_p, c_int, c_int, POINTER(c_uint8), c_uint64, POINTER(c_uint8),
-                             c_uint64, POINTER(c_uint8), POINTER(c_uint64))(("skac_sign_to_pub", SKA_DLL))
-skac_sign_to_addr = CFUNCTYPE(c_int, c_void_p, c_int, c_int, c_int, POINTER(c_uint8), c_uint64, POINTER(c_uint8),
-                              c_uint64, POINTER(c_uint8), POINTER(c_uint64))(("skac_sign_to_addr", SKA_DLL))
+#int skac_sign_to_pub(skac_txn_t* txn, int pub_type, int sign_type, const uint8_t* data, size_t data_size,
+#                     const uint8_t* sign, size_t sign_size, uint8_t* pubkey, size_t* pubkey_size)
+skac_sign_to_pub = CFUNCTYPE(c_int, c_void_p, c_int, c_int, c_void_p, c_size_t, c_void_p,
+                             c_size_t, c_void_p, c_void_p)(("skac_sign_to_pub", SKA_DLL))
+# int skac_sign_to_addr(skac_txn_t* txn, int sign_type, int addr_type, const uint8_t* data, size_t data_size,
+#         const uint8_t* sign, size_t sign_size, uint8_t* addr, size_t* addr_size)
+skac_sign_to_addr = CFUNCTYPE(c_int, c_void_p, c_int, c_int, c_void_p, c_size_t, c_void_p,
+                              c_size_t, c_void_p, c_void_p)(("skac_sign_to_addr", SKA_DLL))
 
 CIPHER_AES_128_ECB = 2
 CIPHER_AES_192_ECB = 3
@@ -199,19 +204,3 @@ SIGN_MAX_SIZE = 192
 PUBKEY_MAX_SIZE = 65
 ADDR_MAX_SIZE = 128
 EC_SIZE = 32
-
-if __name__ == '__main__':
-    err = c_int(0)
-    d = ''
-    buf = create_string_buffer(64)
-    size = c_size_t(0)
-    ctx = skac_ctx_init(0, byref(err))
-    skac_ctx_free(ctx)
-    print("type:{}, sha3:{}".format(type(buf), codecs.encode(buf[:size.value], 'hex')))
-    # ctx = (FUNCTIONS[FUNC_CTX_INIT]((FUNC_CTX_INIT, dll)))(0, byref(err))
-    # txn = (FUNCTIONS[FUNC_TXN_INIT]((FUNC_TXN_INIT, dll)))(ctx, None, byref(err))
-    # ret = (FUNCTIONS[FUNC_HASH]((FUNC_HASH, dll)))(txn, 10, d, len(d), buf, byref(size))
-    # print("type:{}, sha3:{}".format(type(buf), codecs.encode(buf[:size.value], 'hex')))
-    # (FUNCTIONS[FUNC_TXN_FREE]((FUNC_TXN_FREE, dll)))(txn)
-    # (FUNCTIONS[FUNC_CTX_FREE]((FUNC_CTX_FREE, dll)))(ctx)
-    print(DLL_PATH, err.value)
