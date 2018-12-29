@@ -73,10 +73,10 @@ SendAndCheckTX
         # Log to console       \nSendAndCheckTX[addr=${rel_address},key=${rel_key},hash=${relTxHash}]
         ${jsBody} =     GenSendJsonBody      ${rel_address}      ${rel_key}       ${relTxHash}
         Log to console        \nsendbody=${jsBody}
-        ${txhash} =     Post Data Remote  method  data     ${TSTUnionSend}      ${jsBody}       retMsg
+        ${txhash} =     Post Data   method  data     ${TSTUnionSend}      ${jsBody}       retMsg    server=REMOTE
         Log To Console        生成交易-txhash = ${jsBody}
         : FOR    ${INDEX}    IN RANGE    0    ${wait_times}
-        \      ${transaction} =     Post Data Remote      ${APIGetTxByHash}     {"hash":"${txhash}"}       transaction
+        \      ${transaction} =     Post Data      ${APIGetTxByHash}     {"hash":"${txhash}"}       transaction   server=REMOTE
         \      Exit For Loop If  'status' in ${transaction}
        # \      Log to console      'wait..checking...'${txhash}
         \      sleep     1

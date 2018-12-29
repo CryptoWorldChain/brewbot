@@ -110,6 +110,9 @@ ${Block_Time}           5s
 #每次生成多少个测试交易
 ${arg_gentxnum}       3
 
+#默认服务器，当没有server参数时，Post Data和Fatch Info默认链接的服务器名称
+${Default_Server}     REMOTE
+
 
 #for test
 ${Vers_Path}     ${CURDIR}
@@ -122,7 +125,7 @@ InitSession
 
 Post Data
     [Documentation]    发送请求
-    [Arguments]        ${method}    ${data}     @{retfields}       ${server}=LOCAL      
+    [Arguments]        ${method}    ${data}     @{retfields}       ${server}=${Default_Server}      
     Log                postdata=${data}
     ${resp}            Post Request  ${server}  ${method}  data=${data}
     ${body} =          To Json       ${resp.content}
@@ -134,7 +137,7 @@ Post Data
 
 Fetch Info
     [Documentation]    发送请求,无Data
-    [Arguments]        ${method}    @{retfields}       ${server}=LOCAL
+    [Arguments]        ${method}    @{retfields}       ${server}=${Default_Server} 
     ${resp}            Post Data  ${method}  None  @{retfields}  server=${server}
     [Return]           ${resp}
 
@@ -152,7 +155,7 @@ Post Data Remote
 
 Get Account Info
     [Documentation]    获取账户信息
-    [Arguments]        ${address}    @{retfields}     ${server}=LOCAL
+    [Arguments]        ${address}    @{retfields}     ${server}=${Default_Server} 
     ${resp}             Post Data    ${APIGetAccountInfo}     {"address":"${address}"}    @{retfields}    server=${server}
     [Return]           ${resp}
 
@@ -160,37 +163,37 @@ Get Account Info
 
 Get Crypto Info
     [Documentation]    获取加密币信息
-    [Arguments]        ${symbol}    @{retfields}     ${server}=LOCAL
+    [Arguments]        ${symbol}    @{retfields}     ${server}=${Default_Server} 
     ${resp}            Post Data    ${APIGetCrytoInfo}    {"symbol":"${symbol}"}    @{retfields}    server=${server}
     [Return]           ${resp}
 
 Get Token Info
     [Documentation]    获取Token信息
-    [Arguments]        ${token}    ${address}    @{retfields}     ${server}=LOCAL
+    [Arguments]        ${token}    ${address}    @{retfields}     ${server}=${Default_Server} 
     ${resp}            Post Data    ${APIGetTokenInfo}    {"token":"${token}", "address":"${address}"}    @{retfields}    server=${server}
     [Return]           ${resp}
 
 Get Token List
     [Documentation]    获取Token列表
-    [Arguments]        ${token}    ${address}    @{retfields}     ${server}=LOCAL
+    [Arguments]        ${token}    ${address}    @{retfields}     ${server}=${Default_Server} 
     ${resp}            Post Data    ${APIGetTokenList}    {"token":"${token}", "address":"${address}"}    @{retfields}    server=${server}
     [Return]           ${resp}
 
 Get Block By Hash
     [Documentation]    通过区块Hash查询区块
-    [Arguments]        ${hash}    @{retfields}     ${server}=LOCAL
+    [Arguments]        ${hash}    @{retfields}     ${server}=${Default_Server} 
     ${resp}            Post Data    ${APIGetBlockByHash}    {"hash":"${hash}"}    @{retfields}    server=${server}
     [Return]           ${resp}
 
 Get Block By Number
     [Documentation]    通过区块高度查询区块
-    [Arguments]        ${number}    @{retfields}     ${server}=LOCAL
+    [Arguments]        ${number}    @{retfields}     ${server}=${Default_Server} 
     ${resp}            Post Data    ${APIGetBlockByNum}    {"number":"${number}"}    @{retfields}    server=${server}
     [Return]           ${resp}
 
 Get Block By Tx Hash
     [Documentation]    通过交易的Hash查询区块
-    [Arguments]        ${hash}    @{retfields}     ${server}=LOCAL
+    [Arguments]        ${hash}    @{retfields}     ${server}=${Default_Server} 
     ${resp}            Post Data    ${APIGetBlockByTxHash}    {"hash":"${hash}"}    @{retfields}    server=${server}
     [Return]           ${resp}
 
@@ -198,26 +201,26 @@ Get Block By Tx Hash
 
 Get Summary
     [Documentation]    获取概要
-    [Arguments]        @{retfields}     ${server}=LOCAL
+    [Arguments]        @{retfields}     ${server}=${Default_Server} 
     ${resp}            Post Data    ${APIGetSummary}    data=None    server=${server}
     [Return]           ${resp}
 
 Get Last Block
     [Documentation]    获取最新区块
-    [Arguments]        @{retfields}     ${server}=LOCAL
+    [Arguments]        @{retfields}     ${server}=${Default_Server} 
     ${resp}            Post Data    ${APIGetLatestBlock}    data=None    server=${server}    
     [Return]           ${resp}
 
 Get Tx By Hash
     [Documentation]    通过Hash查询交易
-    [Arguments]        ${hash}    @{retfields}     ${server}=LOCAL
+    [Arguments]        ${hash}    @{retfields}     ${server}=${Default_Server} 
     ${resp}            Post Data    ${APIGetTxByHash}    {"hash":"${hash}"}    @{retfields}    server=${server}
     [Return]           ${resp}
     
 #TODO save multi transaction
 
 GenerateTestData
-    [Arguments]      ${txcount}=1000    ${server}=LOCAL
+    [Arguments]      ${txcount}=1000    ${server}=${Default_Server} 
     ${resp}          Post Data  ${TSTGenTxdata}  {"defaultTx":${txcount}}  retcode  server=${server}
     [return]         ${resp}
 

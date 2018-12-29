@@ -20,7 +20,7 @@ SendAndCheckTx
 #        sleep     ${Block_Time}
 
         : FOR    ${INDEX}    IN RANGE    0    ${wait_times}
-        \      ${transaction} =     Post Data      ${APIGetTxByHash}     {"hash":"${txhash}"}       transaction    server=REMOTE
+        \      ${transaction} =     Post Data      ${APIGetTxByHash}     {"hash":"${txhash}"}       transaction
         \      Exit For Loop If  'status' in ${transaction}
        # \      Log to console      'wait..checking...'${txhash}
         \      sleep     1

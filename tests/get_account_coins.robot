@@ -23,7 +23,7 @@ ${JSON_BODY}           {"address" :"${to_addr}" }
 
 
 001    [Documentation]      获取目标地址余额:   ${to_addr}
-        ${accountinfo} =     Post Data      ${APIGetAccountInfo}      ${JSON_BODY}      account    server=REMOTE
+        ${accountinfo} =     Post Data      ${APIGetAccountInfo}      ${JSON_BODY}      account
         Log     ${accountinfo}
         Log to console       \nbalance=${accountinfo['balance']}     If  balance in ${accountinfo}
 
