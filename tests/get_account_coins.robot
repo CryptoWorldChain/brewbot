@@ -13,7 +13,7 @@ Suite Setup    InitSession
 
 *** Variables ***
 
-${to_addr}             e21ceee76f77b613fac3e9bb4fe34cdd4e7b3ea5
+${to_addr}             e0c7d2a75ccd61af87aaa818cdcb2246706363a1
 ${JSON_BODY}           {"address" :"${to_addr}" }
 
 *** Test Cases ***
@@ -23,7 +23,7 @@ ${JSON_BODY}           {"address" :"${to_addr}" }
 
 
 001    [Documentation]      获取目标地址余额:   ${to_addr}
-        ${accountinfo} =     PostData      ${GetAccountCoin}      ${JSON_BODY}      account
+        ${accountinfo} =     Post Data      ${APIGetAccountInfo}      ${JSON_BODY}      account    server=REMOTE
         Log     ${accountinfo}
         Log to console       \nbalance=${accountinfo['balance']}     If  balance in ${accountinfo}
 

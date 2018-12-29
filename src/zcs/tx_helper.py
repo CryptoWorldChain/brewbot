@@ -205,8 +205,11 @@ def loadkeystore(ctx, filepath):
         plant = ctx.decrypt(txn, ciphertext)
         kv = oentity_pb2.KeyStoreValue()
         kv.ParseFromString(plant[:l])
-        pubk = codecs.decode(kv.pubkey, 'hex')
-        prik = codecs.decode(kv.prikey, 'hex')
+        pubk = kv.pubkey.replace(' ', '').replace('\n', '')
+        prik = kv.prikey.replace(' ', '').replace('\n', '')
+        print("pub:{}, pri:{}, publen:{}, prilen:{}".format(pubk, prik, len(pubk), len(prik)))
+        pubk = codecs.decode(pubk, 'hex')
+        prik = codecs.decode(prik, 'hex')
         prik = prik[::-1]
         pubk = pubk[::-1]
         x = pubk[32:]

@@ -13,12 +13,12 @@ Suite Setup    InitSession
 
 001    [Documentation]       检查是否正在打块,出块间隔等待${Block_Time}。
        [Tags]        Blocking Check
-        ${num1} =      FetchInfo      ${GetLatestBlock}     number
+       ${num1} =     Fetch Info      ${APIGetLatestBlock}     number    server=REMOTE
         Log To Console        check.1==>${num1}
         Sleep       ${Block_Time}
-       ${num2} =      FetchInfo      ${GetLatestBlock}     number
+       ${num2} =      Fetch Info     ${APIGetLatestBlock}     number    server=REMOTE
         Log To Console        check.2==>${num2}
         Sleep       ${Block_Time}
-        ${num3} =      FetchInfo      ${GetLatestBlock}     number
+        ${num3} =     Fetch Info     ${APIGetLatestBlock}     number    server=REMOTE
         Log To Console      check==>${num1},${num2},${num3}
         Should Be True    ${num1}<${num2}<${num3}
