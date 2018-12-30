@@ -3,7 +3,7 @@
 
 #服务器及端口
 ${LOCAL_URL}        http://127.0.0.1:8000
-${REMOTE_URL}         http://172.18.92.107:38000
+${REMOTE_URL}         http://172.18.92.103:38000
 
 
 #访问的路径
@@ -108,7 +108,7 @@ ${TSTCallContract}        ${TST_Path}/pbtec.do
 ${Block_Time}           5s
 
 #每次生成多少个测试交易
-${arg_gentxnum}       3
+${arg_gentxnum}       3000
 
 #默认服务器，当没有server参数时，Post Data和Fatch Info默认链接的服务器名称
 ${Default_Server}     REMOTE
