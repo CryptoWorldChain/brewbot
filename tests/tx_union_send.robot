@@ -14,7 +14,7 @@ Suite Setup    InitSession
 *** Variables ***
 
 ${union_address}       e0c7d2a75ccd61af87aaa818cdcb2246706363a1
-${amount}              1000000000000000000
+${amount}              100000000000000000000
 
 @{rel_addresses}       f4fcdf9e5603a5375f9fe0c8bba951e085cdcdfc
                ...     8502208b949e7c08acb4c2f1aef06caa39891a79
@@ -34,7 +34,7 @@ ${amount}              1000000000000000000
 
 
 
-${to_addr}             3eb9c18610e35c7f039d3591a15f967d98b3d5b8
+${to_addr}             63d4f6ca069b6343a3a39d31f9d26e7bd6e3afcf
 ${GET_ACCOUNT_JSON}           {"address" :"${to_addr}" }
 
 ${union_sign_count}       6
