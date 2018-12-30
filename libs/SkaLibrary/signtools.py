@@ -28,6 +28,14 @@ class SkaSignTool(object):
         res_str = a + b
         print(res_str)
         return res_str
+
+    def sign_drop(self, keyfile, bcuids):
+        ks = tx_helper.loadkeystore(self.ctx, "keystore2.json")
+        print(ks)
+        msg = skatool.bc_sign_dropnode(ks.pri(), "dpos", bcuids)
+        print(msg)
+        return msg
+
     
     def deal_transaction(self, api_url, api_path, json_data):
         """
@@ -100,9 +108,11 @@ class SkaSignTool(object):
 
 if __name__ == "__main__":
     
-    print(ks)
-    pri = codecs.decode('1a7264ae5078f2a0c5b5e567457bbcedf1bdc3263ad32576c9a3c512c386ed6f', 'hex')
-    bcuids = ["a", "b", "c"]
+    bcuids = ["Da9ctlRZlJAmOG6pJabWyWB9JyAK"]
     skatool = SkaSignTool()
-    msg = skatool.bc_sign_dropnode(pri, "dpos", bcuids)
-    print(msg)
+    url = "http://172.16.211.2:38000/cks/pzp/pbdrp.do"
+    msg = skatool.sign_drop("keystore2.json", bcuids)
+    r = requests.post(url=url, data=msg)
+    print(r.content)
+
+    
