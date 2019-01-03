@@ -7,9 +7,12 @@ import json
 import requests
 
 from google.protobuf import json_format
-from gens import tximpl_pb2
-from gens import tx_pb2
-from gens import oentity_pb2
+import tximpl_pb2
+import tx_pb2
+import oentity_pb2
+# from gens import tximpl_pb2
+# from gens import tx_pb2
+# from gens import oentity_pb2
 
 import ska
 from ska_defines import *
@@ -174,8 +177,10 @@ def loadkeystore(ctx, filepath):
     """load CWV keystore json file"""
     ks = None
     pykp = None
-    with open('keystore1.json', 'r') as kfile:
+    with open(filepath, 'r') as kfile:
         ks = json.load(kfile)
+    # tx_keystore = "59514f8d87c964520fcaf515d300e3f704bf6fcb"
+    # ks = tx_keystore
     ciphertext = codecs.decode(ks["cipherText"], 'hex')
     pwd = codecs.encode(ks["pwd"], 'ascii')
     iv = codecs.decode(ks["cipherParams"]["iv"], 'hex')
@@ -205,11 +210,8 @@ def loadkeystore(ctx, filepath):
         plant = ctx.decrypt(txn, ciphertext)
         kv = oentity_pb2.KeyStoreValue()
         kv.ParseFromString(plant[:l])
-        pubk = kv.pubkey.replace(' ', '').replace('\n', '')
-        prik = kv.prikey.replace(' ', '').replace('\n', '')
-        print("pub:{}, pri:{}, publen:{}, prilen:{}".format(pubk, prik, len(pubk), len(prik)))
-        pubk = codecs.decode(pubk, 'hex')
-        prik = codecs.decode(prik, 'hex')
+        pubk = codecs.decode(kv.pubkey, 'hex')
+        prik = codecs.decode(kv.prikey, 'hex')
         prik = prik[::-1]
         pubk = pubk[::-1]
         x = pubk[32:]

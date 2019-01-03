@@ -15,12 +15,12 @@ Suite Setup    InitSession
 
 SendAndCheckTx
     [Arguments]    ${wait_times}=100
-        ${txhash} =     FetchInfo      ${TST_SendOneTx}     txhash
+        ${txhash} =     Fetch Info      ${TSTSendOneTx}     txhash
         Log To Console        生成交易-txhash = ${txhash}
 #        sleep     ${Block_Time}
 
         : FOR    ${INDEX}    IN RANGE    0    ${wait_times}
-        \      ${transaction} =     PostData      ${GetTxByHash}     {"hash":"${txhash}"}       transaction
+        \      ${transaction} =     Post Data      ${APIGetTxByHash}     {"hash":"${txhash}"}       transaction
         \      Exit For Loop If  'status' in ${transaction}
        # \      Log to console      'wait..checking...'${txhash}
         \      sleep     1

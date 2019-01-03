@@ -23,7 +23,7 @@ Suite Setup    InitSession
 002    [Documentation]      检查交易笔数-${arg_gentxnum}
         Log To Console        循环检查交易
         : FOR    ${INDEX}    IN RANGE    1    ${arg_gentxnum}
-        \     ${result} =     FetchInfo      ${TST_GetTestTxCount}     retmsg
+        \     ${result} =     Fetch Info      ${TSTGetTestTxCount}     retmsg
         \     ${numtx} =      Get Substring       ${result}     7
         \      Log To Console        get-result = ${numtx}
         \      Exit For Loop If    ${numtx} >= ${arg_gentxnum}
