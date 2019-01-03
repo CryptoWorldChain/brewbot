@@ -3,23 +3,24 @@
 
 #服务器及端口
 ${BASE_URL}         http://localhost:8000
+# ${BASE_URL}         http://172.18.92.110:38000
 
 
 #访问的路径
-${Base_Path}         /cks
+${Base_Path}         /fbs
 
 #访问的路径
 ${API_Path}         ${Base_Path}/api
 
-##获取最新的高度
-${GetLatestBlock}   ${API_Path}/pbglb.do
+##获取最新的高度API_Path
+${GetLatestBlock}   ${Base_Path}/glb/pbglb.do
 
 
-#根据hash获取交易
-${GetTxByHash}      ${API_Path}/pbgtx.do
+#根据hash获取交易${API_Path}
+${GetTxByHash}      ${Base_Path}/txt/pbgtx.do
 
 ##获取用户余额
-${GetAccountCoin}   ${API_Path}/pbgac.do
+${GetAccountCoin}   ${Base_Path}/act/pbgac.do
 
 
 
